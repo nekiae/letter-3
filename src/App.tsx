@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from 'framer-motion'
 import { GallerySection } from './components/gallery/GallerySection'
@@ -12,7 +12,7 @@ const LETTER = {
   timlidId: 'person-3',
 
   // Имя тимлида (в шапке и в окне чата)
-  timlidName: 'Эля',
+  timlidName: 'Неки',
 
   // Обращение в шапке
   greeting: 'Уважаемая Эльвира Юрьевна',
@@ -238,8 +238,16 @@ function App() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [entered, setEntered] = useState(false)
 
+  useEffect(() => {
+    audioRef.current?.load()
+  }, [])
+
   const handleEnter = () => {
-    audioRef.current?.play().catch(() => { })
+    const audio = audioRef.current
+    if (audio) {
+      audio.currentTime = 0
+      audio.play().catch(() => { })
+    }
     setEntered(true)
   }
 
